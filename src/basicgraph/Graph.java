@@ -26,7 +26,7 @@ public abstract class Graph {
 	private int numVertices;
 	private int numEdges;
 	//optional association of String labels to vertices 
-	private Map<Integer,String> vertexLabels;
+	private Map<Integer, String> vertexLabels;
 	
 	/**
 	 * Create a new empty Graph
@@ -37,10 +37,9 @@ public abstract class Graph {
 		vertexLabels = null;
 	}
 
-	
 	/**
 	 * Report size of vertex set
-	 * @return The number of vertices in the graph.
+	 * @return: The number of vertices in the graph.
 	 */
 	public int getNumVertices() {
 		return numVertices;
@@ -49,7 +48,7 @@ public abstract class Graph {
 	
 	/**
 	 * Report size of edge set
-	 * @return The number of edges in the graph.
+	 * @return: The number of edges in the graph.
 	 */	
 	public int getNumEdges() {
 		return numEdges;
@@ -60,11 +59,11 @@ public abstract class Graph {
 	 * have as its index the next available integer.
 	 * Precondition: contiguous integers are used to 
 	 * index vertices.
-	 * @return index of newly added vertex
+	 * @return: index of newly added vertex
 	 */
 	public int addVertex() {
 		implementAddVertex();
-		numVertices ++;
+		numVertices++;
 		return (numVertices-1);
 	}
 	
@@ -76,15 +75,14 @@ public abstract class Graph {
 	
 	/**
 	 * Add new edge to the graph between given vertices,
-	 * @param v Index of the start point of the edge to be added.
-	 * @param w Index of the end point of the edge to be added.
+	 * @param: v Index of the start point of the edge to be added.
+	 * @param: w Index of the end point of the edge to be added.
 	 */
 	public void addEdge(int v , int w) {
-		numEdges ++;
+		numEdges++;
 		if (v < numVertices && w < numVertices) {
 			implementAddEdge(v , w);			
-		}
-		else {
+		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
@@ -97,60 +95,66 @@ public abstract class Graph {
 	
 	/**
 	 * Get all (out-)neighbors of a given vertex.
-	 * @param v Index of vertex in question.
-	 * @return List of indices of all vertices that are adjacent to v
+	 * @param: v Index of vertex in question.
+	 * @return: List of indices of all vertices that are adjacent to v
 	 * 	via outgoing edges from v. 
 	 */
 	public abstract List<Integer> getNeighbors(int v); 
 	
 	/**
 	 * Get all in-neighbors of a given vertex.
-	 * @param v Index of vertex in question.
-	 * @return List of indices of all vertices that are adjacent to v
+	 * @param: v Index of vertex in question.
+	 * @return: List of indices of all vertices that are adjacent to v
 	 * 	via incoming edges to v. 
 	 */
 	public abstract List<Integer> getInNeighbors(int v);
-
-
 
 	/** 
 	 * The degree sequence of a graph is a sorted (organized in numerical order 
 	 * from largest to smallest, possibly with repetitions) list of the degrees 
 	 * of the vertices in the graph.
 	 * 
-	 * @return The degree sequence of this graph.
+	 * @return: The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
-		return null;
+		List<Integer> degreeList = new ArrayList<Integer>();
+		for (int i = 0; i < getNumVertices(); i++) {
+			degreeList.add(getNeighbors(i).size() + getInNeighbors(i).size());
+		}
+
+		Collections.sort(degreeList);
+		Collections.reverse(degreeList);
+
+		return degreeList;
 	}
 	
 	/**
 	 * Get all the vertices that are 2 away from the vertex in question.
-	 * @param v The starting vertex
-	 * @return A list of the vertices that can be reached in exactly two hops (by
+	 * @param: v The starting vertex
+	 * @return: A list of the vertices that can be reached in exactly two hops (by
 	 * following two edges) from vertex v.
 	 * XXX: Implement in part 2 of week 2 for each subclass of Graph
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
 	/** Return a String representation of the graph
-	 * @return A string representation of the graph
+	 * @return: A string representation of the graph
 	 */
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
 		s += "Degree sequence: " + degreeSequence() + ".\n";
-		if (numVertices <= 20) s += adjacencyString();
+		if (numVertices <= 20) {
+			s += adjacencyString();
+		}
 		return s;
 	}
 
 	/**
 	 * Generate string representation of adjacency list
-	 * @return the String
+	 * @return: the String
 	 */
 	public abstract String adjacencyString();
 
-	
 	// The next methods implement labeled vertices.
 	// Basic graphs may or may not have labeled vertices.
 	
@@ -164,72 +168,64 @@ public abstract class Graph {
 	/**
 	 * Test whether some vertex in the graph is labeled 
 	 * with a given index.
-	 * @param The index being checked
-	 * @return True if there's a vertex in the graph with this index; false otherwise.
+	 * @param: The index being checked
+	 * @return: True if there's a vertex in the graph with this index; false otherwise.
 	 */
-	public boolean hasVertex(int v)
-	{
+	public boolean hasVertex(int v) {
 		return v < getNumVertices();
 	}
 	
 	/**
 	 * Test whether some vertex in the graph is labeled 
 	 * with a given String label
-	 * @param The String label being checked
-	 * @return True if there's a vertex in the graph with this label; false otherwise.
+	 * @param: The String label being checked
+	 * @return: True if there's a vertex in the graph with this label; false otherwise.
 	 */
-	public boolean hasVertex(String s)
-	{
+	public boolean hasVertex(String s) {
 		return vertexLabels.containsValue(s);
 	}
 	
 	/**
 	 * Add label to an unlabeled vertex in the graph.
-	 * @param The index of the vertex to be labeled.
-	 * @param The label to be assigned to this vertex.
+	 * @param: The index of the vertex to be labeled.
+	 * @param: The label to be assigned to this vertex.
 	 */
 	public void addLabel(int v, String s) {
-		if (v < getNumVertices() && !vertexLabels.containsKey(v))
-		{
+		if (v < getNumVertices() && !vertexLabels.containsKey(v)) {
 			vertexLabels.put(v, s);
-		}
-		else {
+		} else {
 			System.out.println("ERROR: tried to label a vertex that is out of range or already labeled");
 		}
 	}
 	
 	/**
 	 * Report label of vertex with given index
-	 * @param The integer index of the vertex
-	 * @return The String label of this vertex
+	 * @param: The integer index of the vertex
+	 * @return: The String label of this vertex
 	 */
 	public String getLabel(int v) {
-		if (vertexLabels.containsKey(v)) {
-			return vertexLabels.get(v);
-		}
-		else return null;
+		return vertexLabels.getOrDefault(v, null);
 	}
 
 	/**
 	 * Report index of vertex with given label.
 	 * (Assume distinct labels for vertices.)
-	 * @param The String label of the vertex
-	 * @return The integer index of this vertex
+	 * @param: The String label of the vertex
+	 * @return: The integer index of this vertex
 	 */
 	public int getIndex(String s) {
 		for (Map.Entry<Integer,String> entry : vertexLabels.entrySet()) {
-			if (entry.getValue().equals(s))
+			if (entry.getValue().equals(s)) {
 				return entry.getKey();
+			}
 		}
 		System.out.println("ERROR: No vertex with this label");
 		return -1;
 	}
-	
 
-	
 	/** Main method provided with some basic tests.  */
 	public static void main (String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
+//		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
 
 
 		// For testing of Part 1 functionality
@@ -243,27 +239,44 @@ public abstract class Graph {
 		GraphAdjList graphFromFile = new GraphAdjList();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", graphFromFile);
 		System.out.println(graphFromFile);
-		
 		System.out.println("Observe all degrees are <= 12.");
 		System.out.println("****");
 
 		System.out.println("\n****");
 		
 		// You can test with real road data here.  Use the data files in data/maps
-		
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
 		System.out.println(airportGraph);
 		System.out.println("Observe most degrees are small (1-30), eight are over 100.");
 		System.out.println("****");
+
+		System.out.println("\n****");
 		
 		//For testing Part 2 functionality
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
 
+		System.out.println("****");
+		System.out.println("Roads / intersections:");
+		GraphAdjList simpleTestGraphAdjList = new GraphAdjList();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestGraphAdjList);
+		System.out.println(simpleTestGraphAdjList);
+		System.out.println("Two hop vertices for Vertex 0 with a GraphAdjList:");
+		System.out.println(simpleTestGraphAdjList.getDistance2(0));
+		System.out.println("****");
 
+		System.out.println("\n****");
 
+		System.out.println("****");
+		System.out.println("Roads / intersections:");
+		GraphAdjMatrix simpleTestGraphAdjMatrix = new GraphAdjMatrix();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestGraphAdjMatrix);
+		System.out.println(simpleTestGraphAdjMatrix);
+		System.out.println("Two hop vertices for Vertex 0 with a GraphAdjMatrix:");
+		System.out.println(simpleTestGraphAdjMatrix.getDistance2(0));
+		System.out.println("****");
 	}
 }

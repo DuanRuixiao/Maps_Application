@@ -35,8 +35,8 @@ public class GraphAdjMatrix extends Graph {
 		int v = getNumVertices();
 		if (v >= adjMatrix.length) {
 			int[][] newAdjMatrix = new int[v*2][v*2];
-			for (int i = 0; i < adjMatrix.length; i ++) {
-				for (int j = 0; j < adjMatrix.length; j ++) {
+			for (int i = 0; i < adjMatrix.length; i++) {
+				for (int j = 0; j < adjMatrix.length; j++) {
 					newAdjMatrix[i][j] = adjMatrix[i][j];
 				}
 			}
@@ -48,8 +48,8 @@ public class GraphAdjMatrix extends Graph {
 	 * Implement the abstract method for adding an edge.
 	 * Allows for multiple edges between two points:
 	 * the entry at row v, column w stores the number of such edges.
-	 * @param v the index of the start point for the edge.
-	 * @param w the index of the end point for the edge.  
+	 * @param: v the index of the start point for the edge.
+	 * @param: w the index of the end point for the edge.
 	 */	
 	public void implementAddEdge(int v, int w) {
 		adjMatrix[v][w] += 1;
@@ -62,13 +62,13 @@ public class GraphAdjMatrix extends Graph {
 	 * and one of its out-neighbors, this neighbor
 	 * appears once in the list for each of these edges.
 	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.
+	 * @param: v the index of vertex.
+	 * @return: List<Integer> a list of indices of vertices.
 	 */	
 	public List<Integer> getNeighbors(int v) {
 		List<Integer> neighbors = new ArrayList<Integer>();
-		for (int i = 0; i < getNumVertices(); i ++) {
-			for (int j=0; j< adjMatrix[v][i]; j ++) {
+		for (int i = 0; i < getNumVertices(); i++) {
+			for (int j = 0; j < adjMatrix[v][i]; j++) {
 				neighbors.add(i);
 			}
 		}
@@ -82,13 +82,13 @@ public class GraphAdjMatrix extends Graph {
 	 * to this one, the neighbor
 	 * appears once in the list for each of these edges.
 	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
+	 * @param: v the index of vertex.
+	 * @return: List<Integer> a list of indices of vertices.
 	 */
 	public List<Integer> getInNeighbors(int v) {
 		List<Integer> inNeighbors = new ArrayList<Integer>();
-		for (int i = 0; i < getNumVertices(); i ++) {
-			for (int j=0; j< adjMatrix[i][v]; j++) {
+		for (int i = 0; i < getNumVertices(); i++) {
+			for (int j = 0; j < adjMatrix[i][v]; j++) {
 				inNeighbors.add(i);
 			}
 		}
@@ -100,29 +100,33 @@ public class GraphAdjMatrix extends Graph {
 	 * vertices reachable by two hops from v.
 	 * Use matrix multiplication to record length 2 paths.
 	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
+	 * @param: v the index of vertex.
+	 * @return: List<Integer> a list of indices of vertices.
 	 */	
 	public List<Integer> getDistance2(int v) {
-		// XXX Implement this method in week 2
-		return null;
+		List<Integer> twoHopsNeighbors = new ArrayList<Integer>();
+		for (int i = 0; i < getNumVertices(); i++) {
+			for (int j = 0; j < adjMatrix[v][i]; j++) {
+				twoHopsNeighbors.addAll(getNeighbors(i));
+			}
+		}
+		return twoHopsNeighbors;
 	}
 	
 	/**
 	 * Generate string representation of adjacency matrix
-	 * @return the String
+	 * @return: the String
 	 */
 	public String adjacencyString() {
 		int dim = getNumVertices();
 		String s = "Adjacency matrix";
 		s += " (size " + dim + "x" + dim + " = " + dim* dim + " integers):";
-		for (int i = 0; i < dim; i ++) {
+		for (int i = 0; i < dim; i++) {
 			s += "\n\t"+i+": ";
 			for (int j = 0; j < dim; j++) {
-			s += adjMatrix[i][j] + ", ";
+				s += adjMatrix[i][j] + ", ";
 			}
 		}
 		return s;
 	}
-
 }
