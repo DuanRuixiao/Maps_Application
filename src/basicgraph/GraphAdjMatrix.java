@@ -1,20 +1,15 @@
 package basicgraph;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /** A class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
- * Vertices are labeled by integers 0 .. n-1
- * and may also have String labels.
+ * Vertices are labeled by integers 0 .. n-1 and may also have String labels.
  * The edges of the graph are not labeled.
  * Representation of edges via an adjacency matrix.
  * 
- * @author UCSD MOOC development team and YOU
- *
+ * @author UCSD MOOC development team and Ruixiao Duan
  */
 public class GraphAdjMatrix extends Graph {
 
@@ -28,8 +23,7 @@ public class GraphAdjMatrix extends Graph {
 	
 	/** 
 	 * Implement the abstract method for adding a vertex.
-	 * If need to increase dimensions of matrix, double them
-	 * to amortize cost. 
+	 * If need to increase dimensions of matrix, double the to amortize cost.
 	 */
 	public void implementAddVertex() {
 		int v = getNumVertices();
@@ -46,8 +40,7 @@ public class GraphAdjMatrix extends Graph {
 	
 	/** 
 	 * Implement the abstract method for adding an edge.
-	 * Allows for multiple edges between two points:
-	 * the entry at row v, column w stores the number of such edges.
+	 * Allows for multiple edges between two points: the entry at row v, column w stores the number of such edges.
 	 * @param: v the index of the start point for the edge.
 	 * @param: w the index of the end point for the edge.
 	 */	
@@ -56,11 +49,9 @@ public class GraphAdjMatrix extends Graph {
 	}
 	
 	/** 
-	 * Implement the abstract method for finding all 
-	 * out-neighbors of a vertex.
-	 * If there are multiple edges between the vertex
-	 * and one of its out-neighbors, this neighbor
-	 * appears once in the list for each of these edges.
+	 * Implement the abstract method for finding all out-neighbors of a vertex.
+	 * If there are multiple edges between the vertex and one of its out-neighbors, this neighbor appears once in the
+	 * list for each of these edges.
 	 * 
 	 * @param: v the index of vertex.
 	 * @return: List<Integer> a list of indices of vertices.
@@ -76,11 +67,9 @@ public class GraphAdjMatrix extends Graph {
 	}
 	
 	/** 
-	 * Implement the abstract method for finding all 
-	 * in-neighbors of a vertex.
-	 * If there are multiple edges from another vertex
-	 * to this one, the neighbor
-	 * appears once in the list for each of these edges.
+	 * Implement the abstract method for finding all in-neighbors of a vertex.
+	 * If there are multiple edges from another vertex to this one, the neighbor appears once in the list for each of
+	 * these edges.
 	 * 
 	 * @param: v the index of vertex.
 	 * @return: List<Integer> a list of indices of vertices.
@@ -96,8 +85,7 @@ public class GraphAdjMatrix extends Graph {
 	}
 	
 	/** 
-	 * Implement the abstract method for finding all 
-	 * vertices reachable by two hops from v.
+	 * Implement the abstract method for finding all vertices reachable by two hops from v.
 	 * Use matrix multiplication to record length 2 paths.
 	 * 
 	 * @param: v the index of vertex.
@@ -114,8 +102,8 @@ public class GraphAdjMatrix extends Graph {
 	}
 	
 	/**
-	 * Generate string representation of adjacency matrix
-	 * @return: the String
+	 * Generate string representation of adjacency matrix.
+	 * @return: the String.
 	 */
 	public String adjacencyString() {
 		int dim = getNumVertices();

@@ -4,24 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /** A class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
- * Vertices are labeled by integers 0 .. n-1
- * and may also have String labels.
+ * Vertices are labeled by integers 0 .. n-1 and may also have String labels.
  * The edges of the graph are not labeled.
  * Representation of edges via adjacency lists.
- * Usually applied in sparse graph. O(|V|)
- * @author UCSD MOOC development team and YOU
+ * Usually applied in sparse graph. O(|V| + |E|)
  *
+ * @author UCSD MOOC development team and Ruixiao Duan
  */
 public class GraphAdjList extends Graph {
 
-	private Map<Integer,ArrayList<Integer>> adjListsMap;
+	private Map<Integer, ArrayList<Integer>> adjListsMap;
 	
 	/** 
-	 * Create a new empty Graph
+	 * Create a new empty Graph.
 	 */
 	public GraphAdjList () {
 		adjListsMap = new HashMap<Integer,ArrayList<Integer>>();
@@ -46,11 +44,9 @@ public class GraphAdjList extends Graph {
 	}
 	
 	/** 
-	 * Implement the abstract method for finding all 
-	 * out-neighbors of a vertex.
-	 * If there are multiple edges between the vertex
-	 * and one of its out-neighbors, this neighbor
-	 * appears once in the list for each of these edges.
+	 * Implement the abstract method for finding all out-neighbors of a vertex.
+	 * If there are multiple edges between the vertex and one of its out-neighbors, this neighbor appears once in the
+	 * list for each of these edges.
 	 * 
 	 * @param: v the index of vertex.
 	 * @return: List<Integer> a list of indices of vertices.
@@ -60,11 +56,9 @@ public class GraphAdjList extends Graph {
 	}
 
 	/** 
-	 * Implement the abstract method for finding all 
-	 * in-neighbors of a vertex.
-	 * If there are multiple edges from another vertex
-	 * to this one, the neighbor
-	 * appears once in the list for each of these edges.
+	 * Implement the abstract method for finding all in-neighbors of a vertex.
+	 * If there are multiple edges from another vertex to this one, the neighbor appears once in the list for each of
+	 * these edges.
 	 * 
 	 * @param: v the index of vertex.
 	 * @return: List<Integer> a list of indices of vertices.
@@ -85,8 +79,7 @@ public class GraphAdjList extends Graph {
 	}
 
 	/** 
-	 * Implement the abstract method for finding all 
-	 * vertices reachable by two hops from v.
+	 * Implement the abstract method for finding all vertices reachable by two hops from v.
 	 * 
 	 * @param: v the index of vertex.
 	 * @return: List<Integer> a list of indices of vertices.
@@ -103,8 +96,8 @@ public class GraphAdjList extends Graph {
 	}
 	
 	/**
-	 * Generate string representation of adjacency list
-	 * @return: the String
+	 * Generate string representation of adjacency list.
+	 * @return: the String.
 	 */
 	public String adjacencyString() {
 		String s = "Adjacency list";

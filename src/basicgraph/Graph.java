@@ -12,24 +12,22 @@ import util.GraphLoader;
 
 /** An abstract class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
- * Vertices are labeled by integers 0 .. n-1
- * and may also have String labels.
+ * Vertices are labeled by integers 0 .. n-1 and may also have String labels.
  * The edges of the graph are not labeled.
  * Representation of edges is left abstract.
  *
- * @author UCSD MOOC development team and YOU
- *
+ * @author UCSD MOOC development team and Ruixiao Duan.
  */
 
 public abstract class Graph {
 
 	private int numVertices;
 	private int numEdges;
-	//optional association of String labels to vertices 
+	//optional association of String labels to vertices
 	private Map<Integer, String> vertexLabels;
 	
 	/**
-	 * Create a new empty Graph
+	 * Create a new empty Graph.
 	 */
 	public Graph() {
 		numVertices = 0;
@@ -38,7 +36,7 @@ public abstract class Graph {
 	}
 
 	/**
-	 * Report size of vertex set
+	 * Report size of vertex set.
 	 * @return: The number of vertices in the graph.
 	 */
 	public int getNumVertices() {
@@ -47,7 +45,7 @@ public abstract class Graph {
 
 	
 	/**
-	 * Report size of edge set
+	 * Report size of edge set.
 	 * @return: The number of edges in the graph.
 	 */	
 	public int getNumEdges() {
@@ -55,11 +53,9 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Add new vertex to the graph.  This vertex will
-	 * have as its index the next available integer.
-	 * Precondition: contiguous integers are used to 
-	 * index vertices.
-	 * @return: index of newly added vertex
+	 * Add new vertex to the graph. This vertex will have as its index the next available integer.
+	 * Precondition: contiguous integers are used to index vertices.
+	 * @return: Index of newly added vertex.
 	 */
 	public int addVertex() {
 		implementAddVertex();
@@ -68,13 +64,12 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Abstract method implementing adding a new
-	 * vertex to the representation of the graph.
+	 * Abstract method implementing adding a new vertex to the representation of the graph.
 	 */
 	public abstract void implementAddVertex();
 	
 	/**
-	 * Add new edge to the graph between given vertices,
+	 * Add new edge to the graph between given vertices.
 	 * @param: v Index of the start point of the edge to be added.
 	 * @param: w Index of the end point of the edge to be added.
 	 */
@@ -88,31 +83,27 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Abstract method implementing adding a new
-	 * edge to the representation of the graph.
+	 * Abstract method implementing adding a new edge to the representation of the graph.
 	 */
 	public abstract void implementAddEdge(int v, int w);
 	
 	/**
 	 * Get all (out-)neighbors of a given vertex.
 	 * @param: v Index of vertex in question.
-	 * @return: List of indices of all vertices that are adjacent to v
-	 * 	via outgoing edges from v. 
+	 * @return: List of indices of all vertices that are adjacent to v via outgoing edges from v.
 	 */
 	public abstract List<Integer> getNeighbors(int v); 
 	
 	/**
 	 * Get all in-neighbors of a given vertex.
 	 * @param: v Index of vertex in question.
-	 * @return: List of indices of all vertices that are adjacent to v
-	 * 	via incoming edges to v. 
+	 * @return: List of indices of all vertices that are adjacent to v via incoming edges to v.
 	 */
 	public abstract List<Integer> getInNeighbors(int v);
 
 	/** 
-	 * The degree sequence of a graph is a sorted (organized in numerical order 
-	 * from largest to smallest, possibly with repetitions) list of the degrees 
-	 * of the vertices in the graph.
+	 * The degree sequence of a graph is a sorted (organized in numerical order from largest to smallest,
+	 * possibly with repetitions) list of the degree of the vertices in the graph.
 	 * 
 	 * @return: The degree sequence of this graph.
 	 */
@@ -130,15 +121,13 @@ public abstract class Graph {
 	
 	/**
 	 * Get all the vertices that are 2 away from the vertex in question.
-	 * @param: v The starting vertex
-	 * @return: A list of the vertices that can be reached in exactly two hops (by
-	 * following two edges) from vertex v.
-	 * XXX: Implement in part 2 of week 2 for each subclass of Graph
+	 * @param: v The starting vertex.
+	 * @return: A list of the vertices that can be reached in exactly two hops (by following two edges) from vertex v.
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
-	/** Return a String representation of the graph
-	 * @return: A string representation of the graph
+	/** Return a String representation of the graph.
+	 * @return: A string representation of the graph.
 	 */
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
@@ -150,8 +139,8 @@ public abstract class Graph {
 	}
 
 	/**
-	 * Generate string representation of adjacency list
-	 * @return: the String
+	 * Generate string representation of adjacency list.
+	 * @return: the String.
 	 */
 	public abstract String adjacencyString();
 
@@ -159,16 +148,16 @@ public abstract class Graph {
 	// Basic graphs may or may not have labeled vertices.
 	
 	/**
-	 * Create a new map of vertex indices to string labels
+	 * Create a new map of vertex indices to string labels.
 	 * (Optional: only if using labeled vertices.)
 	 */
 	public void initializeLabels() {
 		vertexLabels = new HashMap<Integer,String>();
-	}	
+	}
+
 	/**
-	 * Test whether some vertex in the graph is labeled 
-	 * with a given index.
-	 * @param: The index being checked
+	 * Test whether some vertex in the graph is labeled with a given index.
+	 * @param: The index being checked.
 	 * @return: True if there's a vertex in the graph with this index; false otherwise.
 	 */
 	public boolean hasVertex(int v) {
@@ -176,9 +165,8 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Test whether some vertex in the graph is labeled 
-	 * with a given String label
-	 * @param: The String label being checked
+	 * Test whether some vertex in the graph is labeled with a given String label.
+	 * @param: The String label being checked.
 	 * @return: True if there's a vertex in the graph with this label; false otherwise.
 	 */
 	public boolean hasVertex(String s) {
@@ -199,19 +187,18 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Report label of vertex with given index
-	 * @param: The integer index of the vertex
-	 * @return: The String label of this vertex
+	 * Report label of vertex with given index.
+	 * @param: The integer index of the vertex.
+	 * @return: The String label of this vertex.
 	 */
 	public String getLabel(int v) {
 		return vertexLabels.getOrDefault(v, null);
 	}
 
 	/**
-	 * Report index of vertex with given label.
-	 * (Assume distinct labels for vertices.)
-	 * @param: The String label of the vertex
-	 * @return: The integer index of this vertex
+	 * Report index of vertex with given label. (Assume distinct labels for vertices.)
+	 * @param: The String label of the vertex.
+	 * @return: The integer index of this vertex.
 	 */
 	public int getIndex(String s) {
 		for (Map.Entry<Integer,String> entry : vertexLabels.entrySet()) {

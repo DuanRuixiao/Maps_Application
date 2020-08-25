@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import util.GraphLoader;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GraphTests {
     private final GraphAdjList graphAdjList1;
