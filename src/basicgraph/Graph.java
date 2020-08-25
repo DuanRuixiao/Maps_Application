@@ -223,60 +223,8 @@ public abstract class Graph {
 		return -1;
 	}
 
-	/** Main method provided with some basic tests.  */
 	public static void main (String[] args) {
+		// Convert .map file to .intersections file here.
 //		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
-
-
-		// For testing of Part 1 functionality
-		// Add your tests here to make sure your degreeSequence method is returning
-		// the correct list, after examining the graphs.
-		System.out.println("Loading graphs based on real data...");
-		System.out.println("Goal: use degree sequence to analyse graphs.");
-		
-		System.out.println("****");
-		System.out.println("Roads / intersections:");
-		GraphAdjList graphFromFile = new GraphAdjList();
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", graphFromFile);
-		System.out.println(graphFromFile);
-		System.out.println("Observe all degrees are <= 12.");
-		System.out.println("****");
-
-		System.out.println("\n****");
-		
-		// You can test with real road data here.  Use the data files in data/maps
-		System.out.println("Flight data:");
-		GraphAdjList airportGraph = new GraphAdjList();
-		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
-		System.out.println(airportGraph);
-		System.out.println("Observe most degrees are small (1-30), eight are over 100.");
-		System.out.println("****");
-
-		System.out.println("\n****");
-		
-		//For testing Part 2 functionality
-		// Test your distance2 code here.
-		System.out.println("Testing distance-two methods on sample graphs...");
-		System.out.println("Goal: implement method using two approaches.");
-
-		System.out.println("****");
-		System.out.println("Roads / intersections:");
-		GraphAdjList simpleTestGraphAdjList = new GraphAdjList();
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestGraphAdjList);
-		System.out.println(simpleTestGraphAdjList);
-		System.out.println("Two hop vertices for Vertex 0 with a GraphAdjList:");
-		System.out.println(simpleTestGraphAdjList.getDistance2(0));
-		System.out.println("****");
-
-		System.out.println("\n****");
-
-		System.out.println("****");
-		System.out.println("Roads / intersections:");
-		GraphAdjMatrix simpleTestGraphAdjMatrix = new GraphAdjMatrix();
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestGraphAdjMatrix);
-		System.out.println(simpleTestGraphAdjMatrix);
-		System.out.println("Two hop vertices for Vertex 0 with a GraphAdjMatrix:");
-		System.out.println(simpleTestGraphAdjMatrix.getDistance2(0));
-		System.out.println("****");
 	}
 }
