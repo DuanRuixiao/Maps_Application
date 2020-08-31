@@ -1,8 +1,7 @@
 /**
  * @author UCSD Intermediate Programming MOOC team
  *
- * A utility class that reads various kinds of files into different 
- * graph structures.
+ * A utility class that reads various kinds of files into different graph structures.
  */
 package util;
 
@@ -26,25 +25,19 @@ import geography.RoadSegment;
 import roadgraph.MapGraph;
 
 
-public class GraphLoader 
-{
+public class GraphLoader {
 	
 	/** 
-	 * 	 * The file contains data lines as follows:
-	 * lat1 lon1 lat2 lon2 roadName roadType
-	 * 
-	 * where each line is a segment of a road
+	 * The file contains data lines as follows: lat1 lon1 lat2 lon2 roadName roadType
+	 * where each line is a segment of a road.
 	 * These road segments are assumed to be ONE WAY.
 	 * 
-	 * This method will collapse the points so that only intersections 
-	 * are represented as nodes in the graph.
+	 * This method will collapse the points so that only intersections are represented as nodes in the graph.
 	 * 
-	 * @param roadDataFile The file containing the road data, in the format 
-	 *   described.
-	 * @param intersectionsFile The output file containing the intersections.
+	 * @param: roadDataFile The file containing the road data, in the format described.
+	 * @param: intersectionsFile The output file containing the intersections.
 	 */
-	public static void createIntersectionsFile(String roadDataFile, String intersectionsFile)
-	{
+	public static void createIntersectionsFile(String roadDataFile, String intersectionsFile) {
 		Collection<GeographicPoint> nodes = new HashSet<GeographicPoint>();
         HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = 
         		buildPointMapOneWay(roadDataFile);
@@ -58,23 +51,20 @@ public class GraphLoader
 		try {
 			PrintWriter writer = new PrintWriter(intersectionsFile, "UTF-8");
 
-			// Now we need to add the edges
-			// This is the tricky part
+			// Now we need to add the edges.
+			// This is the tricky part.
 			for (GeographicPoint pt : nodes) {
-				// Trace the node to its next node, building up the points 
-				// on the edge as you go.
+				// Trace the node to its next node, building up the points on the edge as you go.
 				List<LinkedList<RoadLineInfo>> inAndOut = pointMap.get(pt);
 				LinkedList<RoadLineInfo> outgoing = inAndOut.get(0);
 				for (RoadLineInfo info : outgoing) {
 					HashSet<GeographicPoint> used = new HashSet<GeographicPoint>();
 					used.add(pt);
 				
-					List<GeographicPoint> pointsOnEdge = 
-							findPointsOnEdge(pointMap, info, nodes);
+					List<GeographicPoint> pointsOnEdge = findPointsOnEdge(pointMap, info, nodes);
 					GeographicPoint end = pointsOnEdge.remove(pointsOnEdge.size()-1);
 					writer.println(pt + " " + end);
 				}
-				
 			}
 			writer.flush();
 			writer.close();
@@ -82,61 +72,45 @@ public class GraphLoader
 		catch (Exception e) {
 			System.out.println("Exception opening intersections file " + e);
 		}
-	
 	}
-	
 
 	/**
-	 * 
 	 *  Read in a file specifying a map.
 	 *
-	 * The file contains data lines as follows:
-	 * lat1 lon1 lat2 lon2 roadName roadType
-	 * 
-	 * where each line is a segment of a road
+	 * The file contains data lines as follows: lat1 lon1 lat2 lon2 roadName roadType
+	 * where each line is a segment of a road.
 	 * These road segments are assumed to be ONE WAY.
 	 * 
-	 * This method will collapse the points so that only intersections 
-	 * are represented as nodes in the graph.
+	 * This method will collapse the points so that only intersections are represented as nodes in the graph.
 	 * 
-	 * @param filename The file containing the road data, in the format 
-	 *   described.
-	 * @param map The graph to load the map into.  The graph is
-	 *   assumed to be directed.
-	 * @param segments The collection of RoadSegments that define the 
-	 *   shape of a road.  These segments are maintained separately from 
-	 *   the graph as they are only used to display paths.
+	 * @param: filename The file containing the road data, in the format described.
+	 * @param: map The graph to load the map into.  The graph is assumed to be directed.
+	 * @param: segments The collection of RoadSegments that define the shape of a road. These segments are maintained
+	 *   separately from the graph as they are only used to display paths.
 	 */
-	public static void loadRoadMap(String filename, roadgraph.MapGraph map)
-	{
+	public static void loadRoadMap(String filename, roadgraph.MapGraph map) {
 		loadRoadMap(filename, map, null, null);
 	}
 
-	
 	/**	  
 	 *  Read in a file specifying a map.
 	 *
-	 * The file contains data lines as follows:
-	 * lat1 lon1 lat2 lon2 roadName roadType
-	 * 
-	 * where each line is a segment of a road
+	 * The file contains data lines as follows: lat1 lon1 lat2 lon2 roadName roadType
+	 * where each line is a segment of a road.
 	 * These road segments are assumed to be ONE WAY.
 	 * 
-	 * This method will collapse the points so that only intersections 
-	 * are represented as nodes in the graph.
+	 * This method will collapse the points so that only intersections are represented as nodes in the graph.
 	 * 
-	 * @param filename The file containing the road data, in the format 
-	 *   described.
-	 * @param map The graph to load the map into.  The graph is
-	 *   assumed to be directed.
+	 * @param: filename The file containing the road data, in the format described.
+	 * @param map The graph to load the map into. he graph is assumed to be directed.
 	 */
-	public static void loadRoadMap(String filename, roadgraph.MapGraph map,  
-			HashMap<GeographicPoint,HashSet<RoadSegment>> segments, 
-			Set<GeographicPoint> intersectionsToLoad)
+	public static void loadRoadMap(String filename,
+								   roadgraph.MapGraph map,
+								   HashMap<GeographicPoint,HashSet<RoadSegment>> segments,
+								   Set<GeographicPoint> intersectionsToLoad)
 	{
 		Collection<GeographicPoint> nodes = new HashSet<GeographicPoint>();
-        HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = 
-        		buildPointMapOneWay(filename);
+        HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = buildPointMapOneWay(filename);
 		
         // Add the nodes to the graph
 		List<GeographicPoint> intersections = findIntersections(pointMap);
@@ -147,39 +121,28 @@ public class GraphLoader
 			}
 			nodes.add(pt);
 		}
-		
-		
+
 		addEdgesAndSegments(nodes, pointMap, map, segments);
 	}
-
 	
 	/**
 	 * 
 	 *  Read in a file specifying a map.
 	 *
-	 * The file contains data lines as follows:
-	 * lat1 lon1 lat2 lon2 roadName roadType
-	 * 
-	 * where each line is a segment of a road
+	 * The file contains data lines as follows: lat1 lon1 lat2 lon2 roadName roadType
+	 * where each line is a segment of a road.
 	 * These road segments are assumed to be ONE WAY.
 	 * 
-	 * This method will collapse the points so that only intersections 
-	 * are represented as nodes in the graph.
+	 * This method will collapse the points so that only intersections are represented as nodes in the graph.
 	 * 
-	 * @param filename The file containing the road data, in the format 
-	 *   described.
-	 * @param theGraph The graph to load the map into.  The graph is
-	 *   assumed to be directed.
+	 * @param: filename The file containing the road data, in the format described.
+	 * @param: theGraph The graph to load the map into. The graph is assumed to be directed.
 	 */
-	public static void loadRoadMap(String filename, basicgraph.Graph theGraph)
-	{
-		HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = 
-        		buildPointMapOneWay(filename);
+	public static void loadRoadMap(String filename, basicgraph.Graph theGraph) {
+		HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = buildPointMapOneWay(filename);
 		
-		HashMap<Integer,GeographicPoint> vertexMap = 
-				new HashMap<Integer,GeographicPoint>();
-		HashMap<GeographicPoint,Integer> reverseMap = 
-				new HashMap<GeographicPoint,Integer>();
+		HashMap<Integer,GeographicPoint> vertexMap = new HashMap<Integer,GeographicPoint>();
+		HashMap<GeographicPoint,Integer> reverseMap = new HashMap<GeographicPoint,Integer>();
 		
         // Add the nodes to the graph
 		List<GeographicPoint> intersections = findIntersections(pointMap);
@@ -195,14 +158,12 @@ public class GraphLoader
 		// Now add the edges
 		Collection<Integer> nodes = vertexMap.keySet();
 		for (Integer nodeNum : nodes) {
-			// Trace the node to its next node, building up the points 
-			// on the edge as you go.
+			// Trace the node to its next node, building up the point on the edge as you go.
 			GeographicPoint pt = vertexMap.get(nodeNum);
 			List<LinkedList<RoadLineInfo>> inAndOut = pointMap.get(pt);
 			List<RoadLineInfo> infoList = inAndOut.get(0);
 			for (RoadLineInfo info : infoList) {
-				GeographicPoint end = findEndOfEdge(pointMap, info, theGraph, 
-						reverseMap);
+				GeographicPoint end = findEndOfEdge(pointMap, info, theGraph, reverseMap);
 				Integer endNum = reverseMap.get(end);
 				theGraph.addEdge(nodeNum, endNum);
 			}
@@ -211,16 +172,15 @@ public class GraphLoader
 	
 	/** Read in a file specifying route maps between airports.
 	 * The file contains data as follows:
-	 * Airline, AirlineID, Source airport, Source airport ID,
-	 * Destination airport, Destination airport ID, Codeshare, Stops, Equipment
-	 * This method will only read in nonstop routes (with Stops == 0)
-	 * Vertices are airports (labeled with Strings)
-	 * Edges represent nonstop routes
-	 * @param filename
-	 * @param graph
+	 * Airline, AirlineID, Source airport, Source airport ID, Destination airport, Destination airport ID, Codeshare,
+	 * Stops, Equipment.
+	 * This method will only read in nonstop routes (with Stops == 0).
+	 * Vertices are airports (labeled with Strings).
+	 * Edges represent nonstop routes.
+	 * @param: filename.
+	 * @param: graph.
 	 */
-	public static void loadRoutes(String filename, Graph graph)
-	{
+	public static void loadRoutes(String filename, Graph graph) {
 		String source;
 		String destination;
 		int sourceIndex;
@@ -267,17 +227,14 @@ public class GraphLoader
             System.err.println("Problem loading route file: " + filename);
             e.printStackTrace();
         }
-
 	}
 		
 	
 	/**
-	 * Loads a graph from a file.  The file is specified with each 
-	 * line representing an edge.  Vertices are numbered from 
-	 * 0..1-numVertices.
+	 * Loads a graph from a file. The file is specified with each line representing an edge.
+	 * Vertices are numbered from 0..umVertices-1.
 	 * 
-	 * The first line of the file contains a single int which is the 
-	 * number of vertices in the graph.
+	 * The first line of the file contains a single int which is the number of vertices in the graph.
 	 * e.g. 
 	 * 5
 	 * 1 3
@@ -285,11 +242,10 @@ public class GraphLoader
 	 * 3 5
 	 * 5 4
 	 * 
-	 * @param filename The file containing the graph
-	 * @param theGraph The graph to be loaded
+	 * @param: filename The file containing the graph.
+	 * @param: theGraph The graph to be loaded.
 	 */
-	public static void loadGraph(String filename, basicgraph.Graph theGraph)
-	{
+	public static void loadGraph(String filename, basicgraph.Graph theGraph) {
 		BufferedReader reader = null;
         try {
             String nextLine;
@@ -317,19 +273,15 @@ public class GraphLoader
         }
 	}
 	
-
-	
-	// Once you have built the pointMap and added the Nodes, 
-	// add the edges and build the road segments if the segments
+	// Once you have built the pointMap and added the Nodes, add the edges and build the road segments if the segments
 	// map is not null.
-	private static void addEdgesAndSegments(Collection<GeographicPoint> nodes, 
-			HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap,
-			MapGraph map, 
-			HashMap<GeographicPoint,HashSet<RoadSegment>> segments)
+	private static void addEdgesAndSegments(Collection<GeographicPoint> nodes,
+											HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap,
+											MapGraph map,
+											HashMap<GeographicPoint,HashSet<RoadSegment>> segments)
 	{
-	
-		// Now we need to add the edges
-		// This is the tricky part
+		// Now we need to add the edges.
+		// This is the tricky part.
 		for (GeographicPoint pt : nodes) {
 			// Trace the node to its next node, building up the points 
 			// on the edge as you go.
@@ -339,8 +291,7 @@ public class GraphLoader
 				HashSet<GeographicPoint> used = new HashSet<GeographicPoint>();
 				used.add(pt);
 				
-				List<GeographicPoint> pointsOnEdge = 
-						findPointsOnEdge(pointMap, info, nodes);
+				List<GeographicPoint> pointsOnEdge = findPointsOnEdge(pointMap, info, nodes);
 				GeographicPoint end = pointsOnEdge.remove(pointsOnEdge.size()-1);
 				double length = getRoadLength(pt, end, pointsOnEdge);
 				map.addEdge(pt, end, info.roadName, info.roadType, length);
@@ -354,8 +305,7 @@ public class GraphLoader
 						segs = new HashSet<RoadSegment>();
 						segments.put(pt,segs);
 					}
-					RoadSegment seg = new RoadSegment(pt, end, pointsOnEdge, 
-							info.roadName, info.roadType, length);
+					RoadSegment seg = new RoadSegment(pt, end, pointsOnEdge, info.roadName, info.roadType, length);
 					segs.add(seg);
 					segs = segments.get(end);
 					if (segs == null) {
@@ -367,13 +317,10 @@ public class GraphLoader
 			}
 		}
 	}
-			
-	
+
 	// Calculate the length of this road segment taking into account all of the 
 	// intermediate geographic points.
-	private static double getRoadLength(GeographicPoint start, GeographicPoint end,
-			List<GeographicPoint> path)
-	{
+	private static double getRoadLength(GeographicPoint start, GeographicPoint end, List<GeographicPoint> path) {
 		double dist = 0.0;
 		GeographicPoint curr = start;
 		for (GeographicPoint next : path) {
@@ -385,8 +332,9 @@ public class GraphLoader
 	}
 	
 	private static List<GeographicPoint>
-	findPointsOnEdge(HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap,
-		RoadLineInfo info, Collection<GeographicPoint> nodes) 
+	findPointsOnEdge(HashMap<GeographicPoint, List<LinkedList<RoadLineInfo>>> pointMap,
+					 RoadLineInfo info,
+					 Collection<GeographicPoint> nodes)
 	{
 		List<GeographicPoint> toReturn = new LinkedList<GeographicPoint>();
 		GeographicPoint pt = info.point1;
@@ -400,8 +348,7 @@ public class GraphLoader
 				if (nextInfo.point2.equals(pt)) {
 					nextInfo = nextLines.get(1);
 				}
-			}
-			else if (nextLines.size() != 1) {
+			} else if (nextLines.size() != 1) {
 				System.out.println("Something went wrong building edges");
 			}
 			pt = end;
@@ -414,14 +361,13 @@ public class GraphLoader
 		return toReturn;
 	}
 
-	// Find the other end of the road segment.  Trace through the pointMap 
-	// starting from the first point in this info until you get to the second.
-	private static GeographicPoint
-	findEndOfEdge(HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap,
-		RoadLineInfo info, basicgraph.Graph graph, 
-		HashMap<GeographicPoint, Integer> reverseMap) 
+	// Find the other end of the road segment.
+	// Trace through the pointMap starting from the first point in this info until you get to the second.
+	private static GeographicPoint findEndOfEdge(HashMap<GeographicPoint, List<LinkedList<RoadLineInfo>>> pointMap,
+												 RoadLineInfo info,
+												 basicgraph.Graph graph,
+												 HashMap<GeographicPoint, Integer> reverseMap)
 	{
-		
 		GeographicPoint pt = info.point1;
 		GeographicPoint end = info.point2;
 		Integer endNum = reverseMap.get(end);
@@ -433,8 +379,7 @@ public class GraphLoader
 				if (nextInfo.point2.equals(pt)) {
 					nextInfo = nextLines.get(1);
 				}
-			}
-			else if (nextLines.size() != 1) {
+			} else if (nextLines.size() != 1) {
 				System.out.println("Something went wrong building edges");
 			}
 			pt = end;
@@ -445,14 +390,13 @@ public class GraphLoader
 		return end;
 	}
 	
-	// Find all the intersections.  Intersections are either dead ends 
-	// (1 road in and 1 road out, which are the reverse of each other)
-	// or intersections between two different roads, or where three
-	// or more segments of the same road meet.
-	private static List<GeographicPoint> 
-	findIntersections(HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap) {
-		// Now find the intersections.  These are roads that do not have
-		// Exactly 1 or 2 roads coming in and out, where the roads in
+	// Find all the intersections.
+	// Intersections are either dead ends (1 road in and 1 road out, which are the reverse of each other)
+	// or intersections between two different roads, or where three or more segments of the same road meet.
+	private static List<GeographicPoint> findIntersections(
+			HashMap<GeographicPoint, List<LinkedList<RoadLineInfo>>> pointMap) {
+		// Now find the intersections.
+		// These are roads that do not have Exactly 1 or 2 roads coming in and out, where the roads in
 		// match the roads out.
 		List<GeographicPoint> intersections = new LinkedList<GeographicPoint>();
 		for (GeographicPoint pt : pointMap.keySet()) {
@@ -472,10 +416,8 @@ public class GraphLoader
 				}
 			}
 			if (roadsIn.size() == 2 && roadsOut.size() == 2) {
-				// If all the road segments have the same name, 
-				// And there are two pairs of reversed nodes, then 
-				// this is not an intersection because the roads pass
-				// through.
+				// If all the road segments have the same name, and there are two pairs of reversed nodes,
+				// then this is not an intersection because the roads pass through.
 			
 				String name = roadsIn.get(0).roadName;
 				boolean sameName = true;
@@ -496,16 +438,13 @@ public class GraphLoader
 				RoadLineInfo out2 = roadsOut.get(1);
 		
 				boolean passThrough = false;
-				if ((in1.isReverse(out1) && in2.isReverse(out2)) ||
-						(in1.isReverse(out2) && in2.isReverse(out1))) {
-					
+				if ((in1.isReverse(out1) && in2.isReverse(out2)) || (in1.isReverse(out2) && in2.isReverse(out1))) {
 					passThrough = true;
 				} 
 				
 				if (sameName && passThrough) {
 					isNode = false;
-				} 
-
+				}
 			} 
 			if (isNode) {
 				intersections.add(pt);
@@ -515,16 +454,12 @@ public class GraphLoader
 	}
 		
 	// Build the map from points to lists of lists of lines.
-	// The map returned is indexed by a GeographicPoint.  The values
-	// are lists of length two where each entry in the list is a list.
-	// The first list stores the outgoing roads while the second 
-	// stores the outgoing roads.
-	private static HashMap<GeographicPoint, List<LinkedList<RoadLineInfo>>>
-	buildPointMapOneWay(String filename)
-	{
+	// The map returned is indexed by a GeographicPoint.
+	// The values are lists of length two where each entry in the list is a list.
+	// The first list stores the outgoing roads while the second stores the outgoing roads.
+	private static HashMap<GeographicPoint, List<LinkedList<RoadLineInfo>>> buildPointMapOneWay(String filename) {
 		BufferedReader reader = null;
-        HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = 
-        		new HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>>();
+        HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> pointMap = new HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>>();
 		try {
             String nextLine;
             reader = new BufferedReader(new FileReader(filename));
@@ -544,9 +479,8 @@ public class GraphLoader
 
 
 	// Add the next line read from the file to the points map.
-	private static void 
-	addToPointsMapOneWay(RoadLineInfo line,
-						HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> map)
+	private static void addToPointsMapOneWay(RoadLineInfo line,
+											 HashMap<GeographicPoint,List<LinkedList<RoadLineInfo>>> map)
 	{
 		List<LinkedList<RoadLineInfo>> pt1Infos = map.get(line.point1);
 		if (pt1Infos == null) {
@@ -567,13 +501,10 @@ public class GraphLoader
 		}
 		List<RoadLineInfo> incoming = pt2Infos.get(1);
 		incoming.add(line);
-		
 	}
 	
 	// Split the input string into the line information
-	private static RoadLineInfo splitInputString(String input)
-	{	
-		
+	private static RoadLineInfo splitInputString(String input) {
 		ArrayList<String> tokens = new ArrayList<String>();
 		Pattern tokSplitter = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"");
 		Matcher m = tokSplitter.matcher(input);
@@ -581,8 +512,7 @@ public class GraphLoader
 		while (m.find()) {
 			if (m.group(1) != null) {
 				tokens.add(m.group(1));	
-			}
-			else {
+			} else {
 				tokens.add(m.group());
 			}
 		}
@@ -595,122 +525,102 @@ public class GraphLoader
         GeographicPoint p2 = new GeographicPoint(lat2, lon2);
 
         return new RoadLineInfo(p1, p2, tokens.get(4), tokens.get(5));
-		
 	}
 	
-	public static void main(String[] args)
-	{
-		GraphLoader.createIntersectionsFile("data/maps/hollywood_small.map", "data/intersections/hollywood_small.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/new_york.map", "data/intersections/new_york.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/san_diego.map", "data/intersections/san_diego.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
+	public static void main(String[] args) {
+		GraphLoader.createIntersectionsFile("data/maps/hollywood_small.map",
+				"data/intersections/hollywood_small.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/new_york.map",
+				"data/intersections/new_york.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/san_diego.map",
+				"data/intersections/san_diego.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/ucsd.map",
+				"data/intersections/ucsd.intersections");
 		
 		// To use this method to convert your custom map files to custom intersections files
 		// just change YOURFILE in the strings below to be the name of the file you saved.
 		// You can comment out the other method calls above to save time.
-		GraphLoader.createIntersectionsFile("data/maps/YOURFILE.map", 
-					                         "data/intersections/YOURFILE.intersections");
-
+		GraphLoader.createIntersectionsFile("data/maps/YOURFILE.map",
+				"data/intersections/YOURFILE.intersections");
 	}
 	
 }	
 	
 
 // A class to store information about the lines in the road files.
-class RoadLineInfo
-{
+class RoadLineInfo {
 	GeographicPoint point1;
 	GeographicPoint point2;
 	
 	String roadName;
 	String roadType;
 	
-	/** Create a new RoadLineInfo object to store information about the line 
-	 * read from the file
-	 * @param p1 One of the points
-	 * @param p2 The other point
-	 * @param roadName The name of the road
-	 * @param roadType The type of the road
+	/** Create a new RoadLineInfo object to store information about the line read from the file.
+	 * @param: p1 One of the points.
+	 * @param: p2 The other point.
+	 * @param: roadName The name of the road.
+	 * @param: roadType The type of the road.
 	 */
-	RoadLineInfo(GeographicPoint p1, GeographicPoint p2, String roadName, String roadType) 
-	{
+	RoadLineInfo(GeographicPoint p1, GeographicPoint p2, String roadName, String roadType) {
 		point1 = p1;
 		point2 = p2;
 		this.roadName = roadName;
 		this.roadType = roadType;
 	}
 	
-	
 	/** Get the other point from this roadLineInfo */
-	public GeographicPoint getOtherPoint(GeographicPoint pt)
-	{
+	public GeographicPoint getOtherPoint(GeographicPoint pt) {
 		if (pt == null) throw new IllegalArgumentException();
 		if (pt.equals(point1)) {
 			return point2;
-		}
-		else if (pt.equals(point2)) {
+		} else if (pt.equals(point2)) {
 			return point1;
+		} else {
+			throw new IllegalArgumentException();
 		}
-		else throw new IllegalArgumentException();
 	}
 	
 	/** Two RoadLineInfo objects are considered equal if they have the same
 	 * two points and the same roadName and roadType.
 	 */
-	public boolean equals(Object o)
-	{
-		if (o == null || !(o instanceof RoadLineInfo))
-		{
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof RoadLineInfo)) {
 			return false;
 		}
 		RoadLineInfo info = (RoadLineInfo)o;
-		return info.point1.equals(this.point1) && info.point2.equals(this.point2)  &&
+		return info.point1.equals(this.point1) && info.point2.equals(this.point2) &&
 				info.roadType.equals(this.roadType) && info.roadName.equals(this.roadName);
-				
 	}
 	
 	/** Calculate the hashCode based on the hashCodes of the two points
-	 * @return The hashcode for this object.
+	 * @return: The hashcode for this object.
 	 */
-	public int hashCode()
-	{
+	public int hashCode() {
 		return point1.hashCode() + point2.hashCode();
-		
 	}
 	
-	/** Returns whether these segments are part of the same road in terms of
-	 * road name and road type.
-	 * @param info The RoadLineInfo to compare against.
-	 * @return true if these represent the same road, false otherwise.
+	/** Returns whether these segments are part of the same road in terms of road name and road type.
+	 * @param: info The RoadLineInfo to compare against.
+	 * @return: true if these represent the same road, false otherwise.
 	 */
-	public boolean sameRoad(RoadLineInfo info)
-	{
+	public boolean sameRoad(RoadLineInfo info) {
 		return info.roadName.equals(this.roadName) && info.roadType.equals(this.roadType);
 	}
 	
 	/** Return a copy of this LineInfo in the other direction */
-	public RoadLineInfo getReverseCopy()
-	{
+	public RoadLineInfo getReverseCopy() {
 		return new RoadLineInfo(this.point2, this.point1, this.roadName, this.roadType);
 	}
 	
-	/** Return true if this road is the same segment as other, but in reverse
-	 *   Otherwise return false.
+	/** Return true if this road is the same segment as other, but in reverse otherwise return false.
 	 */
-	public boolean isReverse(RoadLineInfo other)
-	{
+	public boolean isReverse(RoadLineInfo other) {
 		return this.point1.equals(other.point2) && this.point2.equals(other.point1) &&
 				this.roadName.equals(other.roadName) && this.roadType.equals(other.roadType);
 	}
 	
 	/** Return the string representation of this LineInfo. */
-	public String toString()
-	{
+	public String toString() {
 		return this.point1 + " " + this.point2 + " " + this.roadName + " " + this.roadType;
-		
 	}
-	
-	
-	
-	
 }

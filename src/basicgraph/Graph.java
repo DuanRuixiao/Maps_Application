@@ -5,10 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import util.GraphLoader;
 
 /** An abstract class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
@@ -37,7 +33,7 @@ public abstract class Graph {
 
 	/**
 	 * Report size of vertex set.
-	 * @return: The number of vertices in the graph.
+	 * @return The number of vertices in the graph.
 	 */
 	public int getNumVertices() {
 		return numVertices;
@@ -46,7 +42,7 @@ public abstract class Graph {
 	
 	/**
 	 * Report size of edge set.
-	 * @return: The number of edges in the graph.
+	 * @return The number of edges in the graph.
 	 */	
 	public int getNumEdges() {
 		return numEdges;
@@ -55,7 +51,7 @@ public abstract class Graph {
 	/**
 	 * Add new vertex to the graph. This vertex will have as its index the next available integer.
 	 * Precondition: contiguous integers are used to index vertices.
-	 * @return: Index of newly added vertex.
+	 * @return Index of newly added vertex.
 	 */
 	public int addVertex() {
 		implementAddVertex();
@@ -70,8 +66,8 @@ public abstract class Graph {
 	
 	/**
 	 * Add new edge to the graph between given vertices.
-	 * @param: v Index of the start point of the edge to be added.
-	 * @param: w Index of the end point of the edge to be added.
+	 * @param v Index of the start point of the edge to be added.
+	 * @param w Index of the end point of the edge to be added.
 	 */
 	public void addEdge(int v , int w) {
 		numEdges++;
@@ -89,15 +85,15 @@ public abstract class Graph {
 	
 	/**
 	 * Get all (out-)neighbors of a given vertex.
-	 * @param: v Index of vertex in question.
-	 * @return: List of indices of all vertices that are adjacent to v via outgoing edges from v.
+	 * @param v Index of vertex in question.
+	 * @return List of indices of all vertices that are adjacent to v via outgoing edges from v.
 	 */
 	public abstract List<Integer> getNeighbors(int v); 
 	
 	/**
 	 * Get all in-neighbors of a given vertex.
-	 * @param: v Index of vertex in question.
-	 * @return: List of indices of all vertices that are adjacent to v via incoming edges to v.
+	 * @param v Index of vertex in question.
+	 * @return List of indices of all vertices that are adjacent to v via incoming edges to v.
 	 */
 	public abstract List<Integer> getInNeighbors(int v);
 
@@ -105,7 +101,7 @@ public abstract class Graph {
 	 * The degree sequence of a graph is a sorted (organized in numerical order from largest to smallest,
 	 * possibly with repetitions) list of the degree of the vertices in the graph.
 	 * 
-	 * @return: The degree sequence of this graph.
+	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
 		List<Integer> degreeList = new ArrayList<Integer>();
@@ -121,13 +117,13 @@ public abstract class Graph {
 	
 	/**
 	 * Get all the vertices that are 2 away from the vertex in question.
-	 * @param: v The starting vertex.
-	 * @return: A list of the vertices that can be reached in exactly two hops (by following two edges) from vertex v.
+	 * @param v The starting vertex.
+	 * @return A list of the vertices that can be reached in exactly two hops (by following two edges) from vertex v.
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
 	/** Return a String representation of the graph.
-	 * @return: A string representation of the graph.
+	 * @return A string representation of the graph.
 	 */
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
@@ -140,7 +136,7 @@ public abstract class Graph {
 
 	/**
 	 * Generate string representation of adjacency list.
-	 * @return: the String.
+	 * @return the String.
 	 */
 	public abstract String adjacencyString();
 
@@ -157,8 +153,8 @@ public abstract class Graph {
 
 	/**
 	 * Test whether some vertex in the graph is labeled with a given index.
-	 * @param: The index being checked.
-	 * @return: True if there's a vertex in the graph with this index; false otherwise.
+	 * @param v The index being checked.
+	 * @return True if there's a vertex in the graph with this index; false otherwise.
 	 */
 	public boolean hasVertex(int v) {
 		return v < getNumVertices();
@@ -166,8 +162,8 @@ public abstract class Graph {
 	
 	/**
 	 * Test whether some vertex in the graph is labeled with a given String label.
-	 * @param: The String label being checked.
-	 * @return: True if there's a vertex in the graph with this label; false otherwise.
+	 * @param s The String label being checked.
+	 * @return True if there's a vertex in the graph with this label; false otherwise.
 	 */
 	public boolean hasVertex(String s) {
 		return vertexLabels.containsValue(s);
@@ -175,8 +171,8 @@ public abstract class Graph {
 	
 	/**
 	 * Add label to an unlabeled vertex in the graph.
-	 * @param: The index of the vertex to be labeled.
-	 * @param: The label to be assigned to this vertex.
+	 * @param v The index of the vertex to be labeled.
+	 * @param s The label to be assigned to this vertex.
 	 */
 	public void addLabel(int v, String s) {
 		if (v < getNumVertices() && !vertexLabels.containsKey(v)) {
@@ -188,8 +184,8 @@ public abstract class Graph {
 	
 	/**
 	 * Report label of vertex with given index.
-	 * @param: The integer index of the vertex.
-	 * @return: The String label of this vertex.
+	 * @param v The integer index of the vertex.
+	 * @return The String label of this vertex.
 	 */
 	public String getLabel(int v) {
 		return vertexLabels.getOrDefault(v, null);
@@ -197,8 +193,8 @@ public abstract class Graph {
 
 	/**
 	 * Report index of vertex with given label. (Assume distinct labels for vertices.)
-	 * @param: The String label of the vertex.
-	 * @return: The integer index of this vertex.
+	 * @param s The String label of the vertex.
+	 * @return The integer index of this vertex.
 	 */
 	public int getIndex(String s) {
 		for (Map.Entry<Integer,String> entry : vertexLabels.entrySet()) {
@@ -208,10 +204,5 @@ public abstract class Graph {
 		}
 		System.out.println("ERROR: No vertex with this label");
 		return -1;
-	}
-
-	public static void main (String[] args) {
-		// Convert .map file to .intersections file here.
-//		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
 	}
 }

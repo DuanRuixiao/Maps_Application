@@ -1,14 +1,10 @@
-/**
- * 
- */
-package week3example;
+package util;
+
+import maze.Maze;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
 
 /**
  * @author Christine
@@ -16,8 +12,7 @@ import java.util.List;
  */
 public class MazeLoader {
 
-	public static void loadMaze(String filename, Maze maze)
-	{
+	public static void loadMaze(String filename, Maze maze) {
 		BufferedReader reader = null;
 		try {
             String nextLine;
@@ -45,7 +40,6 @@ public class MazeLoader {
             		currCol++;
             	}
             	currRow++;
-            	
             }
             while (currRow < height) {
             	for (int c = 0; c<width; c++) {
@@ -61,5 +55,4 @@ public class MazeLoader {
 
 		maze.linkEdges();
 	}
-	
 }

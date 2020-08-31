@@ -1,7 +1,4 @@
-/**
- * 
- */
-package week3example;
+package maze;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.List;
  */
 public class MazeNode {
 	private List<MazeNode> neighbors;
-	// Since our maze is always a grid, nodes keep track of their row and column
+	// Since our maze is always a grid, nodes keep track of their row and column.
 	private int row;
 	private int column;
 	private char displayChar;
@@ -39,16 +36,14 @@ public class MazeNode {
 		this.displayChar = displayChar;
 	}
 
-	public MazeNode(int row, int col)
-	{
+	public MazeNode(int row, int col) {
 		this.row = row;
 		this.column = col;
 		neighbors = new LinkedList<MazeNode>();
 		displayChar = EMPTY;
 	}
 
-	public void addNeighbor(MazeNode neighbor) 
-	{
+	public void addNeighbor(MazeNode neighbor) {
 		neighbors.add(neighbor);
 	}
 	
@@ -72,6 +67,4 @@ public class MazeNode {
 	public int getColumn() {
 		return column;
 	}
-	
-	
 }
